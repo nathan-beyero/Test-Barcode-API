@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import RedirectResponse
 
 from wrappers.upcitemdb import UPCItemDB
 
@@ -7,6 +8,10 @@ from models import Item
 app = FastAPI()
 
 upc_item_db = UPCItemDB()
+
+@app.get("/", tags=["Root"], include_in_schema=False)
+async def root():
+    return RedirectResponse(url="/docs")
 
 @app.get("/barcode/{barcode}", status_code=200, tags=["Barcode Lookup"])
 async def barcode(barcode: str):
