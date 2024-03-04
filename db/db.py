@@ -2,7 +2,7 @@ from sqlmodel import create_engine, SQLModel, Session, select
 from models.models import Item, Product
 
 conf = {
-    'host': "localhost",
+    'host': "0.0.0.0",
     'port':'5432',
     'database': "postgres",
     'user': "mydatabase1",
