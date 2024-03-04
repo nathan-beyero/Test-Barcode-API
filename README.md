@@ -1,11 +1,6 @@
-# Cupboard Backend
-
-## Getting started
+## For local testing:
 - Install packages  
    ```pip install -r requirements.txt```
-- Firebase admin key 
 
-- Run the server on port 8000
-    ```uvicorn main:app --reload```  
-- Access the API docs  
-    ```endpoint/docs```
+- Run the server on port 8080
+    ```uvicorn app.main:app --reload```
