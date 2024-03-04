@@ -1,6 +1,7 @@
-fastapi==0.89.1
-pydantic==1.10.5
-requests==2.27.1
-uvicorn==0.20.0
-sqlalchemy==2.0.25
-sqlmodel==0.0.14
+fastapi==0.110.0
+psycopg2==2.9.9
+pydantic==2.6.3
+requests==2.31.0
+uvicorn==0.27.1
+sqlalchemy==2.0.28
+sqlmodel==0.0.16

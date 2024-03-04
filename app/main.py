@@ -27,10 +27,14 @@ async def barcode(barcode: str):
     if product is None:
         try:
             product = upc_item_db.get_product(barcode)
-            product = Product(**product)
+            
         except Exception as e:
             return {"error": str(e)}
-
+        
+        if product is None:
+            return {"error": "Product not found."}
+        
+        product = Product(**product)
         db.create_product(product)
 
     return product
