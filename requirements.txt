@@ -4,4 +4,3 @@ requests==2.27.1
 uvicorn==0.20.0
 sqlalchemy==2.0.25
 sqlmodel==0.0.14
-```
