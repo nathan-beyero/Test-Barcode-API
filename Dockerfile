@@ -20,4 +20,7 @@ COPY ./wrappers /code/wrappers
 COPY ./models /code/models
 
 # 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080", "--workers", "2", "--header", "server:custom-server-name"]
+COPY ./db /code/db
+
+# 
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]

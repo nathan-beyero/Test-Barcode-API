@@ -3,40 +3,66 @@ from fastapi.responses import RedirectResponse
 
 from wrappers.upcitemdb import UPCItemDB
 
-from models import Item
+from models.models import Item, Product
+import db.db as db
 
 app = FastAPI()
 
 upc_item_db = UPCItemDB()
 
+
+db.create_tables()
+
+
 @app.get("/", tags=["Root"], include_in_schema=False)
 async def root():
     return RedirectResponse(url="/docs")
 
+
 @app.get("/barcode/{barcode}", status_code=200, tags=["Barcode Lookup"])
 async def barcode(barcode: str):
-    try:
-        item = {
-            "upc_database": upc_item_db.get_item(barcode)
-        }
-    except Exception as e:
-        return {"error": str(e)}
+    
+    product = db.get_product(barcode.zfill(13)) # pad zeroes to make it 13 digits
+    
+    if product is None:
+        try:
+            product = upc_item_db.get_product(barcode)
+            product = Product(**product)
+        except Exception as e:
+            return {"error": str(e)}
 
-    return item
+        db.create_product(product)
 
-@app.post("/api/add_item", tags=["Database Management"])
+    return product
+
+
+@app.post("/api/add_item", status_code=201, tags=["Database Management"])
 async def add_item(item: Item):
+    db.add_item(item)
     return
 
-@app.post("/api/check_out_item", tags=["Database Management"])
-async def checkout_item(barcode_id: str, amount: int):
+
+@app.get('/api/get_all_items', tags=["Database Management"])
+async def get_all_items():
+    return db.get_all_items()
+
+
+@app.get('/api/get_all_products', tags=["Database Management"])
+async def get_all_products():
+    return db.get_all_products()
+
+
+@app.get("/test/delete_tables", tags=["Test"])
+async def test_drop_tables():
+    db.drop_tables()
     return
+
 
 @app.get("/test/upc", tags=["Test"])
-async def test():
-    item = upc_item_db.get_item("0885909950805")
+async def test_upc():
+    item = upc_item_db.get_product("0885909950805")
 
     if item is None:
-        return {"error": "Item not found"}
+        return {"error": "UPC API is down."}
     
     return {"upc": item}

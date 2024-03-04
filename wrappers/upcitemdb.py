@@ -5,7 +5,7 @@ class UPCItemDB:
     def __init__(self):
         self.base_url = 'https://api.upcitemdb.com/prod/trial'
 
-    def get_item(self, barcode):
+    def get_product(self, barcode):
         url = self.base_url + '/lookup'
 
         headers = { 'Accept': 'application/json' }
@@ -16,4 +16,13 @@ class UPCItemDB:
         if response.status_code != 200:
             return None
 
-        return response.json()
+        json = response.json()
+        
+        val = {
+            "barcode_id": json['items'][0]['ean'],
+            "name": json['items'][0]['title'],
+            "description": json['items'][0]['description'],
+            "category": json['items'][0]['category'].split(' > ')[-1]
+        }
+
+        return val
