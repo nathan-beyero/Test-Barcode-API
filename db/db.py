@@ -62,4 +62,3 @@ def get_num_products():
 
 def drop_tables():
     SQLModel.metadata.drop_all(engine)
-    create_tables()

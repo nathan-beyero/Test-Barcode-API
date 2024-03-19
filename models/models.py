@@ -8,12 +8,13 @@ class Item(SQLModel, table=True):
     product_id: int = Field(foreign_key="product.id")
     expiration_date: date
     
-class Product(SQLModel, table=True):
+class Product(SQLModel, table=True): # make sure column names match the API response in upcitemdb.py
     id: Optional[int] = Field(default=None, primary_key=True)
     barcode: str = Field(index=True)
     name: str
     description: str
     brand: str
-    # image: List[str]
+    image: str # image URL
     category: str
-    # tags: List[str]
+    # tags: List[str]   # do we want a separate table for tags?
+    

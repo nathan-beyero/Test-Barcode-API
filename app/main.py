@@ -32,6 +32,7 @@ async def get_product_by_barcode(barcode: str):
             product = upc_item_db.get_product(barcode)
             
         except Exception as e:
+            # return {"error": str(e)}  # for debugging
             raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="UPC API is down.")
         
         if product is None:
@@ -58,7 +59,7 @@ async def get_all_products():
     """Get all products."""
     return db.get_all_products()
 
-
+# TODO: check if item's product_id is valid
 @app.post("/items", status_code=status.HTTP_201_CREATED, tags=["Database Management"])
 async def add_items(items: List[Item]):
     """Add items to the database."""
@@ -86,6 +87,7 @@ async def get_inventory_summary():
 
 @app.get("/reset", status_code=status.HTTP_200_OK, tags=["Test"])
 async def wipe_all_data():
-    """Drop all tables in the database. For testing purposes only."""
+    """Drop and recreate all tables in the database. For testing purposes only."""
     db.drop_tables()
+    db.create_tables()
     return
