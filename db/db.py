@@ -25,7 +25,7 @@ def create_product(product: Product):
     
 def get_product(barcode: str):
     with Session(engine) as session:
-        statement = select(Product).where(Product.barcode_id == barcode)
+        statement = select(Product).where(Product.barcode == barcode)
         result = session.exec(statement)
         return result.first()
 
@@ -47,6 +47,19 @@ def get_all_items():
         statement = select(Item)
         results = session.exec(statement)
         return results.all()
+    
+def get_num_items():
+    with Session(engine) as session:
+        statement = select(Item)
+        results = session.exec(statement)
+        return len(results.all())
+    
+def get_num_products():
+    with Session(engine) as session:
+        statement = select(Product)
+        results = session.exec(statement)
+        return len(results.all())
 
 def drop_tables():
     SQLModel.metadata.drop_all(engine)
+    create_tables()
